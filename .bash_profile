@@ -12,13 +12,22 @@ fi
 #Setup git editor to be vim
 export EDITOR=vim
 
+#Add local bin to PATH
+export PATH=$PATH:~/bin/
+
 #Aliases
 alias be="bundle exec"
 alias bi="bundle install"
+alias bo='EDITOR=subl bundle open'
 alias setup_rails='bundle install; be rake db:migrate; RAILS_ENV=test be rake db:migrate'
 alias run_test='bundle exec ruby -I test'
+alias api_spec='BUNDLE_GEMFILE=../../Gemfile be rspec'
 alias fuzz='rubocop `git ls-files -m | awk "/\.rb\"`'
 alias heat='rubocop -a `git ls-files -m | awk "/\.rb\"`'
+alias setup='bundle install; be rake db:migrate; RAILS_ENV=test be rake db:migrate; yarn install'
+alias server='be rails server -p 5000'
+alias fserver='FOREGROUND_JOBS=1 bundle exec rails server -p 5000'
+alias console='be rails c'
 
 alias gch="git checkout"
 alias ga="git add"
