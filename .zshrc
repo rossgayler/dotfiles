@@ -1,11 +1,11 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
-# export ZSH="$HOME/.oh-my-zsh"
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
+# load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
@@ -72,7 +72,7 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
-# source $ZSH/oh-my-zsh.sh
+source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -85,23 +85,99 @@ plugins=(git)
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
 # else
-#   export EDITOR='mvim'
+#   export EDITOR='nvim'
 # fi
 
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# export ARCHFLAGS="-arch $(uname -m)"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# Set personal aliases, overriding those provided by Oh My Zsh libs,
+# plugins, and themes. Aliases can be placed here, though Oh My Zsh
+# users are encouraged to define aliases within a top-level file in
+# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
+# - $ZSH_CUSTOM/aliases.zsh
+# - $ZSH_CUSTOM/macos.zsh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# . /usr/local/opt/asdf/asdf.sh
-# . /usr/local/opt/asdf/etc/bash_completion.d/asdf.bash
+# -----------------------------------------------------------------------------
+#                     Aliases and Environment Variables
+# -----------------------------------------------------------------------------
+
+#Fix Agnoster zsh theme
+export DEFAULT_USER=rossg
+
+#Setup git editor to be vim
+export EDITOR=vim
+
+#Aliases
+alias be="bundle exec"
+alias bi="bundle install"
+alias bo='EDITOR=subl bundle open'
+alias setup_rails='bundle install; be rake db:migrate; RAILS_ENV=test be rake db:migrate'
+alias run_test='bundle exec ruby -I test'
+alias api_spec='BUNDLE_GEMFILE=../../Gemfile be rspec'
+alias api_db='BUNDLE_GEMFILE=../../Gemfile be rake db:migrate RAILS_ENV=test'
+alias fuzz='rubocop `git ls-files -m | awk "/\.rb\"`'
+alias heat='rubocop -a `git ls-files -m | awk "/\.rb\"`'
+alias setup='bundle install && yarn install && be rails assets:clobber db:migrate db:test:prepare'
+alias server='be rails s -p 3002'
+alias fserver='NODE_OPTIONS=--openssl-legacy-provider bin/webpack-dev-server'
+alias console='be rails c'
+alias worker="sidekiq -c 2"
+alias prod_console="heroku run rails console --app accountsockclubcom-production"
+alias staging_console="heroku run rails console --app accountsockclubcom-staging"
+
+alias gb="git branch --list | cat"
+alias gbd="git branch -D"
+alias gch="git checkout"
+
+alias gl="git log"
+alias gd='git diff'
+
+# copy SHA of HEAD to clipboard
+alias glc='git log --pretty=format:'%H' -n 1 | pbcopy'
+
+# current branch name
+alias mybranch="git rev-parse --abbrev-ref HEAD"
+
+# see branches that have a commit in them
+# arg = commit SHA (defaults to HEAD)
+alias gbc='git branch --contains'
+
+# see branches that have been merged into a commit
+# arg = commit SHA (defaults to HEAD)
+alias mbr='git branch --merged'
+
+alias ga="git add"
+alias gap="git add -p"
+alias gs="git status"
+alias gc='git commit'
+
+alias gp="git push"
+alias gpn='git push --no-verify'
+alias yeet="git push --force"
+alias yeet-bigly="git push --force --no-verify"
+
+# push branch to origin for first time
+function gpu () {
+  git push -u origin $(mybranch)
+}
+
+# force push branch and set upstream to origin (useful for rebases)
+function gpd () {
+  git push --no-verify -u origin $(mybranch)
+}
+
+# alias fix_samson='sudo pfctl -F all'
+
+#installing z
+# . `brew --prefix`/etc/profile.d/z.sh
+
+# -----------------------------------------------------------------------------
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
